@@ -1,0 +1,11 @@
+
+<PyGitScript>
+	<!--将从这个目录里拷贝文件到当前目录-->
+    <SrcPath>C:\\Users\\Public\\include</SrcPath>
+	<!--Git版本库目录-->
+	<GitPath>C:\\Users\\Public\\libuv-study</GitPath>
+	<!--每次提交代码的时间间隔,单位:秒-->
+    <TimeVal>5</TimeVal>
+	<!--每次提交的文件数量-->
+    <FileNum>1</FileNum>
+</PyGitScript>
