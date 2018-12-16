@@ -40,7 +40,6 @@ CUDPSocketPool& CUDPSocketPool::Instance()
 
 uv_udp_t& CUDPSocketPool::GetEnableSocket()
 {
-	// TODO: 在此处添加实现代码.
 	int max_size = vt_udp_socket_.size();
 	int index = rand() % max_size;
 	return vt_udp_socket_[index];

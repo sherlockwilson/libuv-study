@@ -56,8 +56,8 @@ void on_read_from_server(uv_udp_t *req, ssize_t nread, const uv_buf_t *buf, cons
 	uv_ip4_name((const struct sockaddr_in*)&CUVGlobalSession::Instance().client_addr(), sender, 16);
 	port = ntohs(((const struct sockaddr_in*)&CUVGlobalSession::Instance().client_addr())->sin_port);
 	fprintf(stderr, "Send Data To %s %d\n", sender, port);
-
-	uv_udp_send(send_req, ptr_udp_socket_, &sndbuf, 1, &CUVGlobalSession::Instance().client_addr(), on_send_to_client);
+	
+	uv_udp_send(send_req, &CUDPSocketPool::Instance().GetEnableSocket(), &sndbuf, 1, &CUVGlobalSession::Instance().client_addr(), on_send_to_client);
 }
 
 void on_send_to_server(uv_udp_send_t *req, int status) {
@@ -114,7 +114,12 @@ CUDPRelayManager::~CUDPRelayManager()
 
 bool CUDPRelayManager::InitManager()
 {
-	return CUDPSocketPool::Instance().Init(1);
+	CUDPSocketPool::Instance().Init(100);
+	for (auto& socket : CUDPSocketPool::Instance().GetAllSocket())
+	{
+		uv_udp_recv_start(&socket, alloc_buffer, on_read_from_client);
+	}
+	return true;
 }
 
 CUDPRelayManager& CUDPRelayManager::Instance()
@@ -129,7 +134,5 @@ CUDPRelayManager::CUDPRelayManager()
 
 bool CUDPRelayManager::Start()
 {
-	ptr_udp_socket_ = &CUDPSocketPool::Instance().GetEnableSocket();
-	uv_udp_recv_start(ptr_udp_socket_, alloc_buffer, on_read_from_client);
 	return uv_run(&CUVGlobalSession::Instance().loop(), UV_RUN_DEFAULT);
 }
