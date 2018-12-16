@@ -1,0 +1,9 @@
+git fetch --all && git reset --hard origin/master && git pull#强制pull
+#将待提交的文件拷贝到本地待提交的git目录里
+git add file1 file2#添加文件
+git commit -a -m “massage”#提交到本地缓存
+git push -u origin master#将本地缓存强制推送到远程git目录
+
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
