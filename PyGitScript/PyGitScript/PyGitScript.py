@@ -39,7 +39,7 @@ def on_timer(interval_index,file_num):
 		git_file_path = git_path + cat_symbol + file_name
 		git_operator.add(git_file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
-	git_operator.commit('-m', 'Add') # git commit -m 'this is a test'
+	git_operator.commit('-m', 'Add') # git commit
 	print("Commit to cache...")
 	git_operator.push()
 	print("Aready push all to remote...")
