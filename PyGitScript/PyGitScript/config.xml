@@ -1,6 +1,6 @@
 
 <PyGitScript>
-	<!--将从这个目录里拷贝文件到当前目录-->
+	<!--将从这个目录里拷贝文件到Git版本库目录-->
     <SrcPath>C:\\Users\\Public\\include</SrcPath>
 	<!--Git版本库目录-->
 	<GitPath>C:\\Users\\Public\\libuv-study</GitPath>
