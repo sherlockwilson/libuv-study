@@ -56,7 +56,7 @@ def on_timer(interval_index,file_num):
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
 	commit_file_info = ",".join(file_name for file_name in file_name_list)
-	git_operator.commit('-m', 'Add ' + commit_file_info + " " + comment) # git commit
+	git_operator.commit('-m', ('Add ' + commit_file_info + " " + comment).encode('utf8')) # git commit
 	print("Commit to cache...")
 	git_operator.push()
 	print("Aready push all to remote...")
