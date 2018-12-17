@@ -7,6 +7,7 @@ import shutil#文件操作相关的库
 import threading#定时器操作相关的库
 import git#git操作相关的库
 import platform#判断操作系统类型相关的库
+import random#随机数相关接口
 
 
 global file_total_num#文件总数
@@ -21,6 +22,7 @@ def on_timer(interval_index,file_num):
 	git_operator = repo.git#获取git操作对象
 	git_operator.pull()#拉取远程版本库的文件
 	prev_index = interval_index-file_num
+	#当前需要提交的所有文件
 	cur_range = file_list[prev_index:interval_index]
 
 	#根据操作系统类型选择文件目录拼接符
@@ -31,6 +33,7 @@ def on_timer(interval_index,file_num):
 	elif(sysstr == "Linux"):
 		cat_symbol = "/"
 
+	content=[]
 	for file_path in cur_range:
 		shutil.copy(file_path,  git_commit_path)
 		print("Already copy %s to %s..." % (file_path,git_path))
@@ -38,9 +41,20 @@ def on_timer(interval_index,file_num):
 		file_name = os.path.split(file_path)[-1]
 		#拼接成git所在目录的文件路径
 		git_file_path = git_commit_path + cat_symbol + file_name
+		#按行读取文件中所有数据（过滤掉换行符）
+		with open(git_file_path,'r') as f:
+			content += f.read().splitlines()
 		git_operator.add(git_file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
-	git_operator.commit('-m', 'Add') # git commit
+	#获取只含//和/*的列表
+	match_list = [one for one in content if (one.find("//") or one.find("/*"))]
+	#需要加入commit后面的注释信息
+	comment = ""
+	if match_list:
+		comment= random.sample(match_list,1)[0]
+	#按,分割文件的提交信息
+	commit_file_info = ",".join(file_path for file_path in cur_range)
+	git_operator.commit('-m', 'Add ' + commit_file_info + " " + comment) # git commit
 	print("Commit to cache...")
 	git_operator.push()
 	print("Aready push all to remote...")
