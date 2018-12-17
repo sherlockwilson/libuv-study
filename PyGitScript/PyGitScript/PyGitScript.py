@@ -36,8 +36,10 @@ def on_timer(interval_index,file_num):
 	content=[]
 	file_name_list = []
 	for file_path in cur_range:
+		'''
 		shutil.copy(file_path,  git_commit_path)
 		print("Already copy %s to %s..." % (file_path,git_path))
+		'''
 		#获取文件名称
 		file_name = os.path.split(file_path)[-1]
 		file_name_list.append(file_name)
@@ -121,7 +123,9 @@ time_val = int(time_val_node_text.data)
 file_num = int(file_num_node_text.data)
 
 #获取目录下所有文件
-file_list = getFileList(src_path,[]) 
+#file_list = getFileList(src_path,[])
+#git提交目录
+file_list = getFileList(git_commit_path,[]) 
 #print(file_list)
 file_total_num = len(file_list)#文件列表长度
 interval_index = file_num#截止下标
