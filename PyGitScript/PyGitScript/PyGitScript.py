@@ -48,8 +48,8 @@ def on_timer(interval_index,file_num):
 			content += f.read().splitlines()
 		git_operator.add(git_file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
-	#获取只含//和/*的列表
-	match_list = [one for one in content if (one.find("//") or one.find("/*"))]
+	#获取包含//的列表
+	match_list = [one for one in content if False == one.find("//")]
 	#需要加入commit后面的注释信息
 	comment = ""
 	if match_list:
