@@ -8,13 +8,13 @@ import threading#定时器操作相关的库
 import git#git操作相关的库
 import platform#判断操作系统类型相关的库
 import random#随机数相关接口
+import chardet#用来查看文件编码
 
 
 global file_total_num#文件总数
 global time_val#时间间隔
 global repo#git版本库对象
 global git_path#git版本库路径
-global git_commit_path#git提交路径
 
 #定时任务
 def on_timer(interval_index,file_num):
@@ -38,12 +38,13 @@ def on_timer(interval_index,file_num):
 		#获取文件名称
 		file_name = os.path.split(file_path)[-1]
 		file_name_list.append(file_name)
-		#拼接成git所在目录的文件路径
-		git_file_path = git_commit_path + cat_symbol + file_name
 		#按行读取文件中所有数据（过滤掉换行符）
-		with open(git_file_path,'r') as f:
-			content += f.read().splitlines()
-		gitobj.add(git_file_path) # 添加文件
+		with open(file_path,'r') as f:
+			data = f.read()
+			f_char_info = chardet.detect(data)
+			data.decode(f_char_info['encoding']).encode('utf-8')
+			content += data.splitlines()
+		gitobj.add(file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
 	#获取包含//的列表
 	match_list = [one for one in content if False == one.find("//")]
@@ -53,7 +54,7 @@ def on_timer(interval_index,file_num):
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
 	commit_file_info = ",".join(file_name for file_name in file_name_list)
-	gitobj.commit('-m', ('Add ' + commit_file_info + " " + comment).encode('utf8')) # git commit
+	gitobj.commit('-m', 'Add ' + commit_file_info + " " + comment) # git commit
 	print("Commit to cache...")
 	gitobj.push()
 	print("Aready push all to remote...")
@@ -98,8 +99,6 @@ time_val_node_text = time_val_node.childNodes[0]
 file_num_node = py_git_script_node.getElementsByTagName("FileNum")[0]
 file_num_node_text = file_num_node.childNodes[0]
 
-#文件目录
-src_path = src_path_node_text.data
 #git版本库目录
 git_path = git_path_node_text.data
 #git提交文件的目录路径
