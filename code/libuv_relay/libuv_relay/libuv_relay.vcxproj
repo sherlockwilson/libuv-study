@@ -158,12 +158,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CUDPRelayManager.h" />
+    <ClInclude Include="CUDPSockAddrManager.h" />
     <ClInclude Include="CUDPSocketPool.h" />
     <ClInclude Include="CUVGlobalSession.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CUDPRelayManager.cpp" />
+    <ClCompile Include="CUDPSockAddrManager.cpp" />
     <ClCompile Include="CUDPSocketPool.cpp" />
     <ClCompile Include="CUVGlobalSession.cpp" />
     <ClCompile Include="libuv_relay.cpp" />

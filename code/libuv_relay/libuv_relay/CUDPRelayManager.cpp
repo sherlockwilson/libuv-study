@@ -1,6 +1,7 @@
 #include "CUDPRelayManager.h"
 #include "CUDPSocketPool.h"
 #include "CUVGlobalSession.h"
+#include "CUDPSockAddrManager.h"
 #include <assert.h>
 #include <vector>
 
@@ -52,12 +53,20 @@ void on_read_from_server(uv_udp_t *req, ssize_t nread, const uv_buf_t *buf, cons
 
 	uv_buf_t sndbuf = uv_buf_init((char*)recv_str_buf.c_str(), recv_str_buf.length());
 
-	memset(sender, 0, 17);
-	uv_ip4_name((const struct sockaddr_in*)&CUVGlobalSession::Instance().client_addr(), sender, 16);
-	port = ntohs(((const struct sockaddr_in*)&CUVGlobalSession::Instance().client_addr())->sin_port);
+	SockAddr client_sock_addr;
+	SockAddr server_sock_addr(sender, port);
+	if (!CUDPSockAddrManager::Instance().GetClientByServer(client_sock_addr, server_sock_addr))
+	{
+		fprintf(stderr, " %s doest not have it's receiver.\n", sender);
+		return ;
+	}
+	struct sockaddr_in client_addr;
+	uv_ip4_name(&client_addr, (char*)client_sock_addr.ip.c_str(), client_sock_addr.ip.size());
+	port = ntohs(client_sock_addr.port);
+
 	fprintf(stderr, "Send Data To %s %d\n", sender, port);
 	
-	uv_udp_send(send_req, &CUDPSocketPool::Instance().GetEnableSocket(), &sndbuf, 1, &CUVGlobalSession::Instance().client_addr(), on_send_to_client);
+	uv_udp_send(send_req, &CUDPSocketPool::Instance().GetEnableSocket(), &sndbuf, 1, (struct sockaddr*)&client_addr, on_send_to_client);
 }
 
 void on_send_to_server(uv_udp_send_t *req, int status) {
@@ -90,7 +99,6 @@ void on_read_from_client(uv_udp_t *req, ssize_t nread, const uv_buf_t *buf, cons
 		CUVGlobalSession::Instance().client_addr() = *(struct sockaddr *)(addr);
 	}
 
-
 	// ... DHCP specific code
 	std::string recv_str_buf(buf->base);
 
@@ -103,8 +111,12 @@ void on_read_from_client(uv_udp_t *req, ssize_t nread, const uv_buf_t *buf, cons
 	std::string send_str_buf(recv_str_buf);
 	uv_udp_init(&CUVGlobalSession::Instance().loop(), &CUVGlobalSession::Instance().send_socket());
 	uv_buf_t sndbuf = uv_buf_init((char*)send_str_buf.c_str(), send_str_buf.length());
+	//½¨Á¢
+	SockAddr server_sock_addr("192.168.1.3", 9000);
+	SockAddr client_sock_addr(str_sender, port);
+	CUDPSockAddrManager::Instance().HashServerToClient(server_sock_addr, client_sock_addr);
 	struct sockaddr_in send_addr;
-	uv_ip4_addr("192.168.1.3", 9000, &send_addr);
+	uv_ip4_addr(server_sock_addr.ip.c_str(), server_sock_addr.port, &send_addr);
 	uv_udp_send(send_req, &CUVGlobalSession::Instance().send_socket(), &sndbuf, 1, (const struct sockaddr *)&send_addr, on_send_to_server);
 }
 
