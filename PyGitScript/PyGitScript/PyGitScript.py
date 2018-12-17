@@ -34,11 +34,13 @@ def on_timer(interval_index,file_num):
 		cat_symbol = "/"
 
 	content=[]
+	file_name_list = []
 	for file_path in cur_range:
 		shutil.copy(file_path,  git_commit_path)
 		print("Already copy %s to %s..." % (file_path,git_path))
 		#获取文件名称
 		file_name = os.path.split(file_path)[-1]
+		file_name_list.append(file_name)
 		#拼接成git所在目录的文件路径
 		git_file_path = git_commit_path + cat_symbol + file_name
 		#按行读取文件中所有数据（过滤掉换行符）
@@ -53,7 +55,7 @@ def on_timer(interval_index,file_num):
 	if match_list:
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
-	commit_file_info = ",".join(file_path for file_path in cur_range)
+	commit_file_info = ",".join(file_name for file_name in file_name_list)
 	git_operator.commit('-m', 'Add ' + commit_file_info + " " + comment) # git commit
 	print("Commit to cache...")
 	git_operator.push()
