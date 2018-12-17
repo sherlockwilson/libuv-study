@@ -9,6 +9,8 @@ import git#git操作相关的库
 import platform#判断操作系统类型相关的库
 import random#随机数相关接口
 import chardet#用来查看文件编码
+import schedule#定时任务
+import time#时间
 
 
 global file_total_num#文件总数
@@ -116,8 +118,18 @@ interval_index = file_num#截止下标
 #初始化git版本库对象
 repo = git.Repo(git_path)
 
-
 #启动定时器执行定时任务
-timer = threading.Timer(time_val,on_timer,[interval_index,file_num])  #首次启动
-timer.start()
+#如果小于0则使用随机的15个时间
+if time_val < 0:
+	hour_list = random.sample(range(0,23), 15)
+	hour_list.sort()
+	min_list = random.sample(range(0,59), 15)
+	for (hour, min) in zip(hour_list,min_list):	
+		schedule.every().day.at("%d:%d" % (hour,min)).do(on_timer,interval_index,file_num)
+#否则启用time_val指定的时间间隔来执行任务
+else:
+	schedule.every(time_val).seconds.do(on_timer,interval_index,file_num)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
