@@ -13,6 +13,7 @@ global file_total_num#文件总数
 global time_val#时间间隔
 global repo#git版本库对象
 global git_path#git版本库路径
+global git_commit_path#git提交路径
 
 #定时任务
 def on_timer(interval_index,file_num):
@@ -31,12 +32,12 @@ def on_timer(interval_index,file_num):
 		cat_symbol = "/"
 
 	for file_path in cur_range:
-		shutil.copy(file_path,  git_path)
+		shutil.copy(file_path,  git_commit_path)
 		print("Already copy %s to %s..." % (file_path,git_path))
 		#获取文件名称
 		file_name = os.path.split(file_path)[-1]
 		#拼接成git所在目录的文件路径
-		git_file_path = git_path + cat_symbol + file_name
+		git_file_path = git_commit_path + cat_symbol + file_name
 		git_operator.add(git_file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
 	git_operator.commit('-m', 'Add') # git commit
@@ -79,24 +80,25 @@ print ("domobj.documentElement %s" % type(py_git_script_node))
 #PyGitScript
 src_path_node = py_git_script_node.getElementsByTagName("SrcPath")[0]
 src_path_node_text = src_path_node.childNodes[0]
-print ("Type: %s,Data: %s" % (type(src_path_node),src_path_node_text.data))
 
 git_path_node = py_git_script_node.getElementsByTagName("GitPath")[0]
 git_path_node_text = git_path_node.childNodes[0]
-print ("Type: %s,Data: %s" % (type(git_path_node),git_path_node_text.data))
+
+git_commit_path_node = py_git_script_node.getElementsByTagName("GitCommitPath")[0]
+git_commit_path_node_text = git_commit_path_node.childNodes[0]
 
 time_val_node = py_git_script_node.getElementsByTagName("TimeVal")[0]
 time_val_node_text = time_val_node.childNodes[0]
-print ("Type: %s,Data: %s" % (type(time_val_node),time_val_node_text.data))
 
 file_num_node = py_git_script_node.getElementsByTagName("FileNum")[0]
 file_num_node_text = file_num_node.childNodes[0]
-print ("Type: %s,Data: %s" % (type(file_num_node),file_num_node_text.data))
 
 #文件目录
 src_path = src_path_node_text.data
 #git版本库目录
 git_path = git_path_node_text.data
+#git提交文件的目录路径
+git_commit_path = git_commit_path_node_text.data
 #时间间隔(单位:秒)
 time_val = int(time_val_node_text.data)
 #每次提交的文件数

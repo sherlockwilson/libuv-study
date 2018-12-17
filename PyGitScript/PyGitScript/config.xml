@@ -4,6 +4,7 @@
     <SrcPath>C:\\Users\\Public\\include</SrcPath>
 	<!--Git版本库目录-->
 	<GitPath>C:\\Users\\Public\\libuv-study</GitPath>
+	<GitCommitPath>C:\\Users\\Public\\libuv-study</GitCommitPath>
 	<!--每次提交代码的时间间隔,单位:秒-->
     <TimeVal>5</TimeVal>
 	<!--每次提交的文件数量-->
