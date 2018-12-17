@@ -18,9 +18,8 @@ global git_commit_path#git提交路径
 
 #定时任务
 def on_timer(interval_index,file_num):
-	#cur_range = file_list[interval_index-file_num:interval_index]
-	git_operator = repo.git#获取git操作对象
-	git_operator.pull()#拉取远程版本库的文件
+	gitobj = repo.git#获取git操作对象
+	gitobj.pull()#拉取远程版本库的文件
 	prev_index = interval_index-file_num
 	#当前需要提交的所有文件
 	cur_range = file_list[prev_index:interval_index]
@@ -36,10 +35,6 @@ def on_timer(interval_index,file_num):
 	content=[]
 	file_name_list = []
 	for file_path in cur_range:
-		'''
-		shutil.copy(file_path,  git_commit_path)
-		print("Already copy %s to %s..." % (file_path,git_path))
-		'''
 		#获取文件名称
 		file_name = os.path.split(file_path)[-1]
 		file_name_list.append(file_name)
@@ -48,7 +43,7 @@ def on_timer(interval_index,file_num):
 		#按行读取文件中所有数据（过滤掉换行符）
 		with open(git_file_path,'r') as f:
 			content += f.read().splitlines()
-		git_operator.add(git_file_path) # 添加文件
+		gitobj.add(git_file_path) # 添加文件
 		print("Already add %s to cache..." % file_path)
 	#获取包含//的列表
 	match_list = [one for one in content if False == one.find("//")]
@@ -58,9 +53,9 @@ def on_timer(interval_index,file_num):
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
 	commit_file_info = ",".join(file_name for file_name in file_name_list)
-	git_operator.commit('-m', ('Add ' + commit_file_info + " " + comment).encode('utf8')) # git commit
+	gitobj.commit('-m', ('Add ' + commit_file_info + " " + comment).encode('utf8')) # git commit
 	print("Commit to cache...")
-	git_operator.push()
+	gitobj.push()
 	print("Aready push all to remote...")
 	next_interval_index = interval_index + file_num
 	#如果下标即将超过总文件数，直接放弃下次定时任务
@@ -77,9 +72,6 @@ def getFileList(dir, fileList):
 		fileList.append(dir)
 	elif os.path.isdir(dir): 
 		for s in os.listdir(dir):
-		#如果需要忽略某些文件夹，使用以下代码
-		##if s == "xxx":
-		##continue
 			newDir=os.path.join(dir,s)
 			getFileList(newDir, fileList) 
 	return fileList
@@ -93,11 +85,6 @@ domobj = xmldom.parse(xmlfilepath)
 print("xmldom.parse:", type(domobj))
 # 得到元素对象
 py_git_script_node = domobj.documentElement
-print ("domobj.documentElement %s" % type(py_git_script_node))
-
-#PyGitScript
-src_path_node = py_git_script_node.getElementsByTagName("SrcPath")[0]
-src_path_node_text = src_path_node.childNodes[0]
 
 git_path_node = py_git_script_node.getElementsByTagName("GitPath")[0]
 git_path_node_text = git_path_node.childNodes[0]
@@ -122,11 +109,8 @@ time_val = int(time_val_node_text.data)
 #每次提交的文件数
 file_num = int(file_num_node_text.data)
 
-#获取目录下所有文件
-#file_list = getFileList(src_path,[])
-#git提交目录
+#获取提交目录下所有文件
 file_list = getFileList(git_commit_path,[]) 
-#print(file_list)
 file_total_num = len(file_list)#文件列表长度
 interval_index = file_num#截止下标
 

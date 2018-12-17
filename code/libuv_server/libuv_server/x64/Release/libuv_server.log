@@ -1,0 +1,10 @@
+﻿  pch.cpp
+  libuv_server.cpp
+c:\users\public\libuv-study\code\libuv_server\libuv_server\libuv_server.cpp(19): warning C4267: “=”: 从“size_t”转换到“ULONG”，可能丢失数据
+c:\users\public\libuv-study\code\libuv_server\libuv_server\libuv_server.cpp(33): warning C4244: “参数”: 从“ssize_t”转换到“int”，可能丢失数据
+c:\users\public\libuv-study\code\libuv_server\libuv_server\libuv_server.cpp(55): warning C4267: “参数”: 从“size_t”转换到“unsigned int”，可能丢失数据
+LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  正在生成代码
+  All 381 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  libuv_server.vcxproj -> C:\Users\Public\libuv-study\code\libuv_server\x64\Release\libuv_server.exe
