@@ -21,6 +21,7 @@ global sysstr#操作系统类型
 global cat_symbol#连接文件夹与文件夹之间的连接符，其中windows下是\\，Linux下是/
 global local_file_list#本地文件列表
 global commit_file_num#需要提交的文件数
+global t
 
 def replace_file_path(file):
 	return file.replace("\\\\","\\")
@@ -34,6 +35,7 @@ def complete_file_path(file):
 #定时任务
 def on_timer():
 	global commit_file_num
+	global t
 	gitobj = repo.git#获取git操作对象
 	print(gitobj.pull())#拉取远程版本库的文件并打印信息
 	#通过git对象获取文件列表信息
@@ -51,7 +53,6 @@ def on_timer():
 	#如果提交的文件数是0
 	if commit_file_num == 0 :
 		print("end commit")
-		schedule.clear()
 		return
 	#随机获取提交文件生成本轮要提交的文件列表
 	current_commit_list = random.sample(not_commit_list,commit_file_num)
@@ -86,9 +87,10 @@ def on_timer():
 	#如果还有文件可读，且当前模式支持随机时间，则清空当前所有任务并计算随机时间执行
 	if time_val < 0:
 		#清楚所有任务并在3600秒内随机选个时间执行
-		schedule.clear()
-		schedule.every(random.randint(3600)).seconds.do(on_timer)
-
+		t=threading.Timer(random.randint(3600),on_timer)
+	else:
+		t=threading.Timer(time_val,on_timer)
+	t.start()
 #获取文件列表
 def getFileList(dir, fileList):
 	newDir = dir
@@ -147,11 +149,9 @@ if __name__ == "__main__":
 	#启动定时器执行定时任务
 	#3600秒内随机选个时间执行
 	if time_val < 0:
-		schedule.every(random.randint(3600)).seconds.do(on_timer)
+		t=threading.Timer(random.randint(3600),on_timer)
 	#否则启用time_val指定的时间间隔来执行任务
 	else:
-		schedule.every(time_val).seconds.do(on_timer)
-	while True:
-		schedule.run_pending()
-		time.sleep(1)
+		t=threading.Timer(time_val,on_timer)
+	t.start()
 
