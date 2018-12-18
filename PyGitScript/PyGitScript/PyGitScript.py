@@ -72,7 +72,8 @@ def on_timer():
 			else :
 				data.decode(f_char_info['encoding']).encode('utf-8')
 			content += data.splitlines()
-		print(gitobj.add(current_commit_file_path)) # git add文件并打印信息
+		gitobj.add(current_commit_file_path) # git add文件并打印信息
+		print("add %s" % current_commit_file_path)
 	#获取包含//的列表
 	match_list = [one for one in content if False == one.find("//")]
 	#需要加入commit后面的注释信息
