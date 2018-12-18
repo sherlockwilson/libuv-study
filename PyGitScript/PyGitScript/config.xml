@@ -3,8 +3,8 @@
 	<!--Git版本库目录-->
 	<GitPath>C:\\Users\\Public\\libuv-study</GitPath>
 	<GitCommitPath>C:\\Users\\Public\\libuv-study\\src</GitCommitPath>
-	<!--每次提交代码的时间间隔,单位:秒,小于0表示使用15个随机生成的时间-->
-    <TimeVal>5</TimeVal>
+	<!--每次提交代码的时间间隔,单位:秒,小于0时每次的时间间隔都是1小时内随机生成的-->
+    <TimeVal>1</TimeVal>
 	<!--每次提交的文件数量-->
     <FileNum>1</FileNum>
 </PyGitScript>

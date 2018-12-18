@@ -17,60 +17,76 @@ global file_total_num#文件总数
 global time_val#时间间隔
 global repo#git版本库对象
 global git_path#git版本库路径
+global sysstr#操作系统类型
+global cat_symbol#连接文件夹与文件夹之间的连接符，其中windows下是\\，Linux下是/
+global local_file_list#本地文件列表
+global commit_file_num#需要提交的文件数
+
+def replace_file_path(file):
+	return file.replace("\\\\","\\")
+
+def complete_file_path(file):
+	if sysstr == "Windows":
+		return (git_path + file.replace("/","\\")).replace("\\\\","\\")
+	else:
+		return file
 
 #定时任务
-def on_timer(interval_index,file_num):
+def on_timer():
+	global commit_file_num
 	gitobj = repo.git#获取git操作对象
-	gitobj.pull()#拉取远程版本库的文件
-	prev_index = interval_index-file_num
-	#当前需要提交的所有文件
-	cur_range = file_list[prev_index:interval_index]
+	print(gitobj.pull())#拉取远程版本库的文件并打印信息
+	#通过git对象获取文件列表信息
+	str_ls_files = gitobj.ls_files()
+	#转换成列表
+	raw_ls_init_files = str_ls_files.strip('\n').split('\n')
+	#转换成完整文件路径列表
+	ls_init_files = [complete_file_path(file) for file in raw_ls_init_files]
+	#将本地文件列表减去本地仓库文件列表，剩下的就是还未提交的文件列表
+	not_commit_list = list(set(local_file_list)- set(ls_init_files))
 
-	#根据操作系统类型选择文件目录拼接符
-	cat_symbol = None
-	sysstr = platform.system()
-	if(sysstr =="Windows"):
-		cat_symbol = "\\"
-	elif(sysstr == "Linux"):
-		cat_symbol = "/"
-
+	#判断配置中需要提交的文件数是否大于未提交的文件数
+	if commit_file_num > len(not_commit_list):
+		commit_file_num = len(not_commit_list)
+	#如果提交的文件数是0
+	if commit_file_num == 0 :
+		print("end commit")
+		schedule.clear()
+		return
+	#随机获取提交文件生成本轮要提交的文件列表
+	current_commit_list = random.sample(not_commit_list,commit_file_num)
+	#存放所有文件的行信息
 	content=[]
 	file_name_list = []
-	for file_path in cur_range:
+	for current_commit_file_path in current_commit_list:
 		#获取文件名称
-		file_name = os.path.split(file_path)[-1]
+		file_name = os.path.split(current_commit_file_path)[-1]
 		file_name_list.append(file_name)
 		#按行读取文件中所有数据（过滤掉换行符）
-		with open(file_path,'r') as f:
+		with open(current_commit_file_path,'r') as f:
 			data = f.read()
 			f_char_info = chardet.detect(data)
 			data.decode(f_char_info['encoding']).encode('utf-8')
 			content += data.splitlines()
-		gitobj.add(file_path) # 添加文件
-		print("Already add %s to cache..." % file_path)
+		print(gitobj.add(current_commit_file_path)) # git add文件并打印信息
 	#获取包含//的列表
 	match_list = [one for one in content if False == one.find("//")]
 	#需要加入commit后面的注释信息
 	comment = ""
+	#随机获取一条包含//的行作为comments
 	if match_list:
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
 	commit_file_info = ",".join(file_name for file_name in file_name_list)
-	gitobj.commit('-m', 'Add ' + commit_file_info + " " + comment) # git commit
-	print("Commit to cache...")
-	gitobj.push()
-	print("Aready push all to remote...")
-	next_interval_index = interval_index + file_num
-	#如果下标即将超过总文件数，直接放弃下次定时任务
-	if next_interval_index > file_total_num:
-		print("Current commit %d files" % (interval_index))
-		schedule.clear()
+	print(gitobj.commit("-a",'-m', 'Add ' + commit_file_info + " " + comment)) #打印提交信息
+	print(gitobj.push())#打印推送信息
 	#如果还有文件可读，且当前模式支持随机时间，则清空当前所有任务并计算随机时间执行
-	elif time_val < 0:
+	if time_val < 0:
 		#清楚所有任务并在3600秒内随机选个时间执行
 		schedule.clear()
-		schedule.every(random.randint(3600)).seconds.do(on_timer,interval_index,file_num)
+		schedule.every(random.randint(3600)).seconds.do(on_timer)
 
+#获取文件列表
 def getFileList(dir, fileList):
 	newDir = dir
 	if os.path.isfile(dir):
@@ -81,8 +97,13 @@ def getFileList(dir, fileList):
 			getFileList(newDir, fileList) 
 	return fileList
 
-
 if __name__ == "__main__":
+	#操作系统名
+	sysstr = platform.system()
+	if(sysstr =="Windows"):
+		cat_symbol = "\\"
+	elif(sysstr == "Linux"):
+		cat_symbol = "/"
 	#加载XML配置文件
 	xmlfilepath = os.path.abspath("config.xml")
 	print ("xml file path：", xmlfilepath)
@@ -109,12 +130,13 @@ if __name__ == "__main__":
 	#时间间隔(单位:秒)
 	time_val = int(time_val_node_text.data)
 	#每次提交的文件数
-	file_num = int(file_num_node_text.data)
+	commit_file_num = int(file_num_node_text.data)
 
 	#获取提交目录下所有文件
-	file_list = getFileList(git_commit_path,[]) 
-	file_total_num = len(file_list)#文件列表长度
-	interval_index = file_num#截止下标
+	local_file_list = getFileList(git_commit_path,[])
+	if sysstr == "Windows":
+		local_file_list = [replace_file_path(local_file) for local_file in local_file_list]
+	file_total_num = len(local_file_list)#文件列表长度
 
 	#初始化git版本库对象
 	repo = git.Repo(git_path)
@@ -122,10 +144,10 @@ if __name__ == "__main__":
 	#启动定时器执行定时任务
 	#3600秒内随机选个时间执行
 	if time_val < 0:
-		schedule.every(random.randint(3600)).seconds.do(on_timer,interval_index,file_num)
+		schedule.every(random.randint(3600)).seconds.do(on_timer)
 	#否则启用time_val指定的时间间隔来执行任务
 	else:
-		schedule.every(time_val).seconds.do(on_timer,interval_index,file_num)
+		schedule.every(time_val).seconds.do(on_timer)
 	while True:
 		schedule.run_pending()
 		time.sleep(1)
