@@ -64,10 +64,12 @@ def on_timer(interval_index,file_num):
 	#如果下标即将超过总文件数，直接放弃下次定时任务
 	if next_interval_index > file_total_num:
 		print("Current commit %d files" % (interval_index))
-		return
-	#根据配置文件提供的信息复制指定数量的文件到当前目录
-	timer = threading.Timer(time_val,on_timer,[next_interval_index,file_num])
-	timer.start()
+		schedule.clear()
+	#如果还有文件可读，且当前模式支持随机时间，则清空当前所有任务并计算随机时间执行
+	elif time_val < 0:
+		#清楚所有任务并在3600秒内随机选个时间执行
+		schedule.clear()
+		schedule.every(random.randint(3600)).seconds.do(on_timer,interval_index,file_num)
 
 def getFileList(dir, fileList):
 	newDir = dir
@@ -79,57 +81,52 @@ def getFileList(dir, fileList):
 			getFileList(newDir, fileList) 
 	return fileList
 
-#加载XML配置文件
-xmlfilepath = os.path.abspath("config.xml")
-print ("xml file path：", xmlfilepath)
 
-# 得到文档对象
-domobj = xmldom.parse(xmlfilepath)
-print("xmldom.parse:", type(domobj))
-# 得到元素对象
-py_git_script_node = domobj.documentElement
+if __name__ == "__main__":
+	#加载XML配置文件
+	xmlfilepath = os.path.abspath("config.xml")
+	print ("xml file path：", xmlfilepath)
+	# 得到文档对象
+	domobj = xmldom.parse(xmlfilepath)
+	# 得到元素对象
+	py_git_script_node = domobj.documentElement
+	git_path_node = py_git_script_node.getElementsByTagName("GitPath")[0]
+	git_path_node_text = git_path_node.childNodes[0]
 
-git_path_node = py_git_script_node.getElementsByTagName("GitPath")[0]
-git_path_node_text = git_path_node.childNodes[0]
+	git_commit_path_node = py_git_script_node.getElementsByTagName("GitCommitPath")[0]
+	git_commit_path_node_text = git_commit_path_node.childNodes[0]
 
-git_commit_path_node = py_git_script_node.getElementsByTagName("GitCommitPath")[0]
-git_commit_path_node_text = git_commit_path_node.childNodes[0]
+	time_val_node = py_git_script_node.getElementsByTagName("TimeVal")[0]
+	time_val_node_text = time_val_node.childNodes[0]
 
-time_val_node = py_git_script_node.getElementsByTagName("TimeVal")[0]
-time_val_node_text = time_val_node.childNodes[0]
+	file_num_node = py_git_script_node.getElementsByTagName("FileNum")[0]
+	file_num_node_text = file_num_node.childNodes[0]
 
-file_num_node = py_git_script_node.getElementsByTagName("FileNum")[0]
-file_num_node_text = file_num_node.childNodes[0]
+	#git版本库目录
+	git_path = git_path_node_text.data
+	#git提交文件的目录路径
+	git_commit_path = git_commit_path_node_text.data
+	#时间间隔(单位:秒)
+	time_val = int(time_val_node_text.data)
+	#每次提交的文件数
+	file_num = int(file_num_node_text.data)
 
-#git版本库目录
-git_path = git_path_node_text.data
-#git提交文件的目录路径
-git_commit_path = git_commit_path_node_text.data
-#时间间隔(单位:秒)
-time_val = int(time_val_node_text.data)
-#每次提交的文件数
-file_num = int(file_num_node_text.data)
+	#获取提交目录下所有文件
+	file_list = getFileList(git_commit_path,[]) 
+	file_total_num = len(file_list)#文件列表长度
+	interval_index = file_num#截止下标
 
-#获取提交目录下所有文件
-file_list = getFileList(git_commit_path,[]) 
-file_total_num = len(file_list)#文件列表长度
-interval_index = file_num#截止下标
+	#初始化git版本库对象
+	repo = git.Repo(git_path)
 
-#初始化git版本库对象
-repo = git.Repo(git_path)
-
-#启动定时器执行定时任务
-#如果小于0则使用随机的15个时间
-if time_val < 0:
-	hour_list = random.sample(range(0,23), 15)
-	hour_list.sort()
-	min_list = random.sample(range(0,59), 15)
-	for (hour, min) in zip(hour_list,min_list):	
-		schedule.every().day.at("%d:%d" % (hour,min)).do(on_timer,interval_index,file_num)
-#否则启用time_val指定的时间间隔来执行任务
-else:
-	schedule.every(time_val).seconds.do(on_timer,interval_index,file_num)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+	#启动定时器执行定时任务
+	#3600秒内随机选个时间执行
+	if time_val < 0:
+		schedule.every(random.randint(3600)).seconds.do(on_timer,interval_index,file_num)
+	#否则启用time_val指定的时间间隔来执行任务
+	else:
+		schedule.every(time_val).seconds.do(on_timer,interval_index,file_num)
+	while True:
+		schedule.run_pending()
+		time.sleep(1)
 
