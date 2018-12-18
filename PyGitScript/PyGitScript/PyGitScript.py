@@ -81,7 +81,7 @@ def on_timer():
 		comment= random.sample(match_list,1)[0]
 	#按,分割文件的提交信息
 	commit_file_info = ",".join(file_name for file_name in file_name_list)
-	print(gitobj.commit("-a",'-m', 'Add ' + commit_file_info + " " + comment)) #打印提交信息
+	gitobj.commit("-a",'-m', 'Add ' + commit_file_info + " " + comment) #打印提交信息
 	print(gitobj.push())#打印推送信息
 	#如果还有文件可读，且当前模式支持随机时间，则清空当前所有任务并计算随机时间执行
 	if time_val < 0:
