@@ -66,7 +66,10 @@ def on_timer():
 		with open(current_commit_file_path,'r') as f:
 			data = f.read()
 			f_char_info = chardet.detect(data)
-			data.decode(f_char_info['encoding']).encode('utf-8')
+			if f_char_info['encoding'] == "ascii":
+				pass
+			else :
+				data.decode(f_char_info['encoding']).encode('utf-8')
 			content += data.splitlines()
 		print(gitobj.add(current_commit_file_path)) # git add文件并打印信息
 	#获取包含//的列表
