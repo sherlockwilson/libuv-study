@@ -66,6 +66,8 @@ def on_timer():
 		#按行读取文件中所有数据（过滤掉换行符）
 		with open(current_commit_file_path,'r') as f:
 			data = f.read()
+			if None == data:
+				continue
 			f_char_info = chardet.detect(data)
 			if f_char_info['encoding'] == "ascii":
 				pass
