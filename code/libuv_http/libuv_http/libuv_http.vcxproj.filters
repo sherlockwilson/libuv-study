@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{9b93f1af-ce13-49d4-b99d-cb92ce1a046e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{22c529a1-49f2-459f-99c6-35216a9f8c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\uv">
+      <UniqueIdentifier>{d3c3d925-4b7d-4f34-829b-3934c7e03663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{04d0823b-a3b8-477b-95da-c975ce8e743c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\uv.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\aix.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\android-ifaddrs.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\bsd.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\darwin.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\errno.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\linux.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\os390.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\posix.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\stdint-msvc2008.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\sunos.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\threadpool.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\tree.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\unix.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\version.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv\win.h">
+      <Filter>include\uv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\membuf.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_callback.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_util_def.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_server.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_server_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_client_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\manager_template.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\libs\libuv.lib">
+      <Filter>libs</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\membuf.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\uv_http_callback.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\uv_http_util.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\uv_http_server.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\uv_http_server_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\uv_http_client_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
