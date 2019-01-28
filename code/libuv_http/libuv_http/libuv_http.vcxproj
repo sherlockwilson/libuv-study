@@ -26,29 +26,10 @@
     <ClInclude Include="..\include\uv_http_client_session_manager.h" />
     <ClInclude Include="..\include\uv_http_server.h" />
     <ClInclude Include="..\include\membuf.h" />
-    <ClInclude Include="..\include\uv.h" />
-    <ClInclude Include="..\include\uv\aix.h" />
-    <ClInclude Include="..\include\uv\android-ifaddrs.h" />
-    <ClInclude Include="..\include\uv\bsd.h" />
-    <ClInclude Include="..\include\uv\darwin.h" />
-    <ClInclude Include="..\include\uv\errno.h" />
-    <ClInclude Include="..\include\uv\linux.h" />
-    <ClInclude Include="..\include\uv\os390.h" />
-    <ClInclude Include="..\include\uv\posix.h" />
-    <ClInclude Include="..\include\uv\stdint-msvc2008.h" />
-    <ClInclude Include="..\include\uv\sunos.h" />
-    <ClInclude Include="..\include\uv\threadpool.h" />
-    <ClInclude Include="..\include\uv\tree.h" />
-    <ClInclude Include="..\include\uv\unix.h" />
-    <ClInclude Include="..\include\uv\version.h" />
-    <ClInclude Include="..\include\uv\win.h" />
     <ClInclude Include="..\include\uv_http_callback.h" />
     <ClInclude Include="..\include\uv_http_server_manager.h" />
     <ClInclude Include="..\include\uv_http_util.h" />
     <ClInclude Include="..\include\uv_http_util_def.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\libs\libuv.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cmd.cc" />
@@ -113,8 +94,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>../include;$(IncludePath)</IncludePath>
-    <LibraryPath>../libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>../../../bin/include;../include;$(IncludePath)</IncludePath>
+    <LibraryPath>../../../bin/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

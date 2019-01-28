@@ -11,62 +11,8 @@
     <Filter Include="src">
       <UniqueIdentifier>{22c529a1-49f2-459f-99c6-35216a9f8c8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\uv">
-      <UniqueIdentifier>{d3c3d925-4b7d-4f34-829b-3934c7e03663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="libs">
-      <UniqueIdentifier>{04d0823b-a3b8-477b-95da-c975ce8e743c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\uv.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\aix.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\android-ifaddrs.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\bsd.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\darwin.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\errno.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\linux.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\os390.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\posix.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\stdint-msvc2008.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\sunos.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\threadpool.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\tree.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\unix.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\version.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv\win.h">
-      <Filter>include\uv</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\membuf.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -100,11 +46,6 @@
     <ClInclude Include="..\include\cmd.h">
       <Filter>include</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\libs\libuv.lib">
-      <Filter>libs</Filter>
-    </Library>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cc">
