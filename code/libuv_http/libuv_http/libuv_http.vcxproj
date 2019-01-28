@@ -23,24 +23,24 @@
     <ClInclude Include="..\include\manager_template.h" />
     <ClInclude Include="..\include\timer.h" />
     <ClInclude Include="..\include\url_cmd_manager.h" />
-    <ClInclude Include="..\include\uv_http_client_session_manager.h" />
-    <ClInclude Include="..\include\uv_http_server.h" />
+    <ClInclude Include="..\include\http_client_session_manager.h" />
+    <ClInclude Include="..\include\http_server.h" />
     <ClInclude Include="..\include\membuf.h" />
-    <ClInclude Include="..\include\uv_http_callback.h" />
-    <ClInclude Include="..\include\uv_http_server_manager.h" />
-    <ClInclude Include="..\include\uv_http_util.h" />
-    <ClInclude Include="..\include\uv_http_util_def.h" />
+    <ClInclude Include="..\include\http_callback.h" />
+    <ClInclude Include="..\include\http_server_manager.h" />
+    <ClInclude Include="..\include\http_util.h" />
+    <ClInclude Include="..\include\http_util_def.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cmd.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\membuf.cc" />
     <ClCompile Include="..\src\url_cmd_manager.cc" />
-    <ClCompile Include="..\src\uv_http_client_session_manager.cc" />
-    <ClCompile Include="..\src\uv_http_server.cc" />
-    <ClCompile Include="..\src\uv_http_callback.cc" />
-    <ClCompile Include="..\src\uv_http_server_manager.cc" />
-    <ClCompile Include="..\src\uv_http_util.cc" />
+    <ClCompile Include="..\src\http_client_session_manager.cc" />
+    <ClCompile Include="..\src\http_server.cc" />
+    <ClCompile Include="..\src\http_callback.cc" />
+    <ClCompile Include="..\src\http_server_manager.cc" />
+    <ClCompile Include="..\src\http_util.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

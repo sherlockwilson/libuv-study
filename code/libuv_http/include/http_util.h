@@ -31,10 +31,6 @@ public:
         int content_length,
         int* respone_size);
 
-    static int HttpHandleRequest(
-        igr_res response_get,
-        igr_res response_post);
-
     static void CloseClient(
         uv_stream_t* client);
 

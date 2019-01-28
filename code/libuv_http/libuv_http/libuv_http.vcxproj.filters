@@ -16,34 +16,34 @@
     <ClInclude Include="..\include\membuf.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\uv_http_callback.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv_http_util.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv_http_util_def.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv_http_server.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\uv_http_server_manager.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\manager_template.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\timer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\uv_http_client_session_manager.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\url_cmd_manager.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\cmd.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_callback.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_client_session_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_server.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_server_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\http_util_def.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,25 +54,25 @@
     <ClCompile Include="..\src\membuf.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\uv_http_callback.cc">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\uv_http_util.cc">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\uv_http_server.cc">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\uv_http_server_manager.cc">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\uv_http_client_session_manager.cc">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\url_cmd_manager.cc">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cmd.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\http_callback.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\http_client_session_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\http_server.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\http_server_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\http_util.cc">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -283,15 +283,6 @@ char* HttpServerUtil::HttpResponse(
     return FormatHttpResponse(status.c_str(), content_type, cookie, content, -1, NULL);
 }
 
-int HttpServerUtil::HttpHandleRequest(
-    igr_res response_get, 
-    igr_res response_post) {
-    HttpServer::Instance()->res_get() = response_get;
-    HttpServer::Instance()->res_post() = response_post;
-    return 1;
-}
-
-
 int HttpServerUtil::HttpPar(
     char* router_info, 
     char* path_info) {
