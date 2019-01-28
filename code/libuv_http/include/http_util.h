@@ -17,13 +17,13 @@ public:
         const char* path_info, 
         const char* payload);
 
-    static char* HttpResponse(
+    static std::string HttpResponse(
         const int code,
         const char* content_type,
         const char* cookie,
         const char* content);
 
-    static char* FormatHttpResponse(
+    static std::string FormatHttpResponse(
         const char* status,
         const char* content_type,
         const char* cookie,
@@ -53,7 +53,7 @@ public:
     static std::string HandleContentType(
         const char* postfix);
 
-    static char* HttpErrorPage(
+    static std::string HttpErrorPage(
         int error_code, 
         const char* error_info);
 

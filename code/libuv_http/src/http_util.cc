@@ -23,8 +23,8 @@ void HttpServerUtil::HandleGet(
             SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
             return;
         } else {
-            char* respone = HttpErrorPage(403, path_info);
-            WriteUvData(client, respone, -1, 0, 1);
+            std::string respone = HttpErrorPage(403, path_info);
+            WriteUvData(client, respone.c_str(), -1, 0, 1);
             return;
         }
     } else {
@@ -45,8 +45,8 @@ void HttpServerUtil::HandleGet(
                 SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
                 return;
             } else {
-                char* respone = HttpErrorPage(403, path_info);
-                WriteUvData(client, respone, -1, 0, 1);
+                std::string respone = HttpErrorPage(403, path_info);
+                WriteUvData(client, respone.c_str(), -1, 0, 1);
                 return;
             }
         } else {
@@ -75,8 +75,8 @@ void HttpServerUtil::HandlePost(
             SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
             return;
         } else {
-            char* respone = HttpErrorPage(403, path_info);
-            WriteUvData(client, respone, -1, 0, 1);
+            std::string respone = HttpErrorPage(403, path_info);
+            WriteUvData(client, respone.c_str(), -1, 0, 1);
             return;
         }
     } else {
@@ -125,7 +125,7 @@ void HttpServerUtil::SendFile(
     int file_size;
     int read_bytes;
     int respone_size;
-    char* respone;
+    std::string respone;
     unsigned char* file_data;
 
 
@@ -142,14 +142,14 @@ void HttpServerUtil::SendFile(
         respone_size = 0;
         respone = FormatHttpResponse("200 OK", content_type, NULL, file_data, file_size, &respone_size);
         free(file_data);
-        WriteUvData(client, respone, respone_size, 0, 1);
+        WriteUvData(client, respone.c_str(), respone_size, 0, 1);
     } else {
         respone = HttpErrorPage(404, file_path);
-        WriteUvData(client, respone, -1, 0, 1);
+        WriteUvData(client, respone.c_str(), -1, 0, 1);
     }
 }
 
-char* HttpServerUtil::FormatHttpResponse(
+std::string HttpServerUtil::FormatHttpResponse(
     const char* status, 
     const char* content_type, 
     const char* cookie, 
@@ -158,23 +158,25 @@ char* HttpServerUtil::FormatHttpResponse(
     int* respone_size)
 {
     int totalsize, header_size;
-    char* respone;
+    //char* respone;
 
     if (content_length < 0) {
         content_length = content ? strlen((char*)content) : 0;
     }
 
     totalsize = strlen(status) + strlen(content_type) + content_length + 128;
-    respone = (char*)malloc(totalsize);
+    //respone = (char*)malloc(totalsize);
+    std::string response;
+    response.reserve(totalsize);
     if (cookie) {
-        header_size = sprintf(respone, "HTTP/1.1 %s\r\n"
+        header_size = sprintf(const_cast<char*>(response.c_str()), "HTTP/1.1 %s\r\n"
             "Server: sherlock.lin/%s\r\n"
             "Content-Type: %s; charset=utf-8\r\n"
             "Content-Length: %d\r\n"
             "Set-Cookie: %s\r\n\r\n",
             status, SERVER_VERSION, content_type, content_length, cookie);
     } else {
-        header_size = sprintf(respone, "HTTP/1.1 %s\r\n"
+        header_size = sprintf(const_cast<char*>(response.c_str()), "HTTP/1.1 %s\r\n"
             "Server: sherlock.lin/%s\r\n"
             "Content-Type: %s; charset=utf-8\r\n"
             "Content-Length: %d\r\n\r\n",
@@ -183,13 +185,13 @@ char* HttpServerUtil::FormatHttpResponse(
     assert(header_size > 0);
 
     if (content) {
-        memcpy(respone + header_size, content, content_length);
+        memcpy(const_cast<char*>(response.c_str()) + header_size, content, content_length);
     }
     if (respone_size) {
         *respone_size = header_size + content_length;
     }
 
-    return respone;
+    return response;
 }
 
 std::string HttpServerUtil::HandleStatusCode(
@@ -261,7 +263,7 @@ std::string HttpServerUtil::HandleContentType(
     }
 }
 
-char* HttpServerUtil::HttpErrorPage(
+std::string HttpServerUtil::HttpErrorPage(
     int error_code, 
     const char* error_info) {
     char* respone;
@@ -277,7 +279,7 @@ char* HttpServerUtil::HttpErrorPage(
     return FormatHttpResponse(error.c_str(), "text/html", NULL, buffer, -1, NULL);
 }
 
-char* HttpServerUtil::HttpResponse(
+std::string HttpServerUtil::HttpResponse(
     const int code, 
     const char* content_type, 
     const char* cookie, 
