@@ -22,7 +22,7 @@ void HttpClientSessionManager::UnInit() {
 void HttpClientSessionManager::Run() {
     for (auto& pair : map_) {
         std::string& post_data = 
-            pair.second->local_content;
+            pair.second->content;
         if(!pair.second->IsExpire()) {
             continue;
         }

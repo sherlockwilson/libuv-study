@@ -20,7 +20,7 @@ char* request_post(const char* head, const char * path, const char* payload)
 int main(void)
 {
     const char* static_path = "/static/path/";
-    const char* ip = "192.168.0.104";
+    const char* ip = "0.0.0.0";
     
     HttpServerUtil::HttpHandleRequest( request_get, request_post);
     HttpServer::Instance()->Init(static_path, ip, 8080);
