@@ -1,19 +1,20 @@
 #pragma once
 
 #include <uv.h>
-
+#include <memory>
 #include <string>
 
 #if defined(WIN32)
 #define snprintf _snprintf
-#endif
-
-#define SERVER_VERSION "0.0.1"
-
 #pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib, "IPHLPAPI.lib")
 #pragma comment(lib, "Psapi.lib")
 #pragma comment(lib, "Userenv.lib")
+#endif
+
+#define SERVER_VERSION "0.0.1"
+
+
 
 typedef char* (*igr_res)(const char* request_header, const char* path_info, const char* payload);
 

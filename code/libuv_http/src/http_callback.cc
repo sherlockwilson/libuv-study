@@ -1,6 +1,7 @@
 #include "http_callback.h"
 
 #include <assert.h>
+#include <string.h>
 
 #include <sstream>
 #include <thread>

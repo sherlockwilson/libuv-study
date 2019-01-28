@@ -1,9 +1,12 @@
 #include "http_util.h"
 
+#include <assert.h>
+#include <string.h>
+
 #include "http_server.h"
 #include "http_callback.h"
 #include "url_cmd_manager.h"
-#include <assert.h>
+
 
 void HttpServerUtil::HandleGet(
     uv_stream_t* client, 
@@ -15,7 +18,7 @@ void HttpServerUtil::HandleGet(
     if (postfix) {
         postfix++;
         if (url) {
-            char file[1024];
+            char file[1024] = {0};
             snprintf(file, sizeof(file), "%s%s", url, path_info);
             SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
             return;
@@ -37,7 +40,7 @@ void HttpServerUtil::HandleGet(
                 file_path++;
                 postfix = strrchr(file_path, '.');
                 postfix++;
-                char file[1024];
+                char file[1024] = {0};
                 snprintf(file, sizeof(file), "%s%s", url, file_path);
                 SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
                 return;
@@ -263,12 +266,12 @@ char* HttpServerUtil::HttpErrorPage(
     const char* error_info) {
     char* respone;
     std::string error = HandleStatusCode(error_code);
-    char buffer[1024];
+    char buffer[1024] = {0};
     snprintf(buffer, 
         sizeof(buffer), 
         "<html><head><title>%s</title></head><body bgcolor='white'><center><h1>%s</h1></center><hr><center>Igropyr/%s</center><p>%s</p></body></html>", 
-        error, 
-        error, 
+        error.c_str(),
+        error.c_str(),
         SERVER_VERSION,
         error_info);
     return FormatHttpResponse(error.c_str(), "text/html", NULL, buffer, -1, NULL);
