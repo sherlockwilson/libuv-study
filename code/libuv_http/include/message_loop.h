@@ -3,14 +3,10 @@
 #include <uv.h>
 
 #include <memory>
-#include <future>
 
 #include "manager_template.h"
-#include "timer.h"
 #include "http_util_def.h"
-#include "url_cmd_manager.h"
-#include "http_server.h"
-#include "http_util.h"
+#include "timer.h"
 
 template<typename MessageType>
 class MessageLoopBase :

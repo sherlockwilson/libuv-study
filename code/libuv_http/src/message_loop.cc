@@ -1,5 +1,9 @@
 #include "message_loop.h"
 
+#include "url_cmd_manager.h"
+#include "http_util.h"
+#include "http_server.h"
+
 bool MessageLoopForGet::PostMsg(
     const HttpSessionSptr session) {
     if (NULL == session) {
