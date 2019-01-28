@@ -3,6 +3,7 @@
 #include "http_callback.h"
 #include "http_server.h"
 #include "url_cmd_manager.h"
+#include "message_loop.h"
 
 HttpServerManager* HttpServerManager::Instance() {
     static HttpServerManager ins;
@@ -14,6 +15,7 @@ bool HttpServerManager::Init(
     const char* ip,
     int port) {
     URLCmdManager::Instance()->Init();
+    MessageLoopForGet::Instance()->Init();
     return HttpServer::Instance()->Init(
         static_path,
         ip,

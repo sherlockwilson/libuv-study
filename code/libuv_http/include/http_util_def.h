@@ -31,13 +31,17 @@ struct HttpSession {
         const std::string& in_header,
         const std::string& in_content,
         const std::string& in_path_info,
-        const std::string& in_payload)
+        const std::string& in_query,
+        const std::string& in_payload,
+        uv_stream_t*& in_client)
         :operate_type(in_operate_type),
         session_len(in_session_len),
         header(in_header),
         content(in_content),
         path_info(in_path_info),
-        payload(in_payload)
+        query(in_query),
+        payload(in_payload),
+        client(in_client)
     {}
     ~HttpSession() {}
 
@@ -52,6 +56,8 @@ struct HttpSession {
     std::string content;
     std::string path_info;
     std::string payload;
+    std::string query;
+    uv_stream_t* client;
 };
 
 typedef std::shared_ptr<HttpSession> HttpSessionSptr;

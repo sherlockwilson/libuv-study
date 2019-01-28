@@ -6,54 +6,20 @@
 #include "http_server.h"
 #include "http_callback.h"
 #include "url_cmd_manager.h"
+#include "message_loop.h"
 
 
 void HttpServerUtil::HandleGet(
     uv_stream_t* client, 
     const char* request_header, 
     const char* path_info, 
-    const char* query_stirng) {
-    char* postfix = strrchr(const_cast<char*>(path_info), '.');
-    const char* url = HttpServer::Instance()->url().c_str();
-    if (postfix) {
-        postfix++;
-        if (url) {
-            char file[1024] = {0};
-            snprintf(file, sizeof(file), "%s%s", url, path_info);
-            SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
-            return;
-        } else {
-            std::string respone = HttpErrorPage(403, path_info);
-            WriteUvData(client, respone.c_str(), -1, 0, 1);
-            return;
-        }
-    } else {
-        auto sptr_http_session = std::make_shared<HttpSession>();
-        sptr_http_session->path_info = path_info;
-        std::string str_respose = URLCmdManager::Instance()->HttpResponse(
-            sptr_http_session);
-        char* respone = const_cast<char*>(
-            str_respose.c_str());
-        if (*respone == ' ') {
-            if (url) {
-                char* file_path = respone;
-                file_path++;
-                postfix = strrchr(file_path, '.');
-                postfix++;
-                char file[1024] = {0};
-                snprintf(file, sizeof(file), "%s%s", url, file_path);
-                SendFile(client, HandleContentType(postfix).c_str(), file, path_info);
-                return;
-            } else {
-                std::string respone = HttpErrorPage(403, path_info);
-                WriteUvData(client, respone.c_str(), -1, 0, 1);
-                return;
-            }
-        } else {
-            WriteUvData(client, respone, -1, 0, 1);
-            return;
-        }
-    }
+    const char* query_string) {
+    auto sptr_http_session = std::make_shared<HttpSession>();
+    sptr_http_session->path_info = path_info;
+    sptr_http_session->query = query_string;
+    sptr_http_session->client = client;
+    MessageLoopForGet::Instance()->PostMsg(sptr_http_session);
+
 }
 
 void HttpServerUtil::HandlePost(

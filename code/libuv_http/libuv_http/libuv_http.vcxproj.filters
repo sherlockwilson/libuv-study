@@ -46,6 +46,9 @@
     <ClInclude Include="..\include\http_util_def.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\message_loop.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cc">
@@ -73,6 +76,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\http_util.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\message_loop.cc">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

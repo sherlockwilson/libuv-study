@@ -9,7 +9,7 @@ public:
         uv_stream_t* client, 
         const char* request_header, 
         const char* path_info, 
-        const char* query_stirng);
+        const char* query_string);
 
     static void HandlePost(
         uv_stream_t* client, 

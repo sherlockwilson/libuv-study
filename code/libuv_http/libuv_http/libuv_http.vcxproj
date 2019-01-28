@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\cmd.h" />
+    <ClInclude Include="..\include\message_loop.h" />
     <ClInclude Include="..\include\manager_template.h" />
     <ClInclude Include="..\include\timer.h" />
     <ClInclude Include="..\include\url_cmd_manager.h" />
@@ -33,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\cmd.cc" />
+    <ClCompile Include="..\src\message_loop.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\membuf.cc" />
     <ClCompile Include="..\src\url_cmd_manager.cc" />
@@ -130,7 +132,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>

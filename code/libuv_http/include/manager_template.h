@@ -1,13 +1,17 @@
 #pragma once
 #include <map>
 #include <mutex>
+#include <memory>
 
 template<typename KeyType,typename ValueType>
 class ManagerTemplate {
 public:
+    ManagerTemplate() {}
+    virtual ~ManagerTemplate() {}
     virtual bool AddData(
         const KeyType& in_key,
         const ValueType& in_value) {
+        std::lock_guard<std::mutex> lock(mutex_);
         auto it_find = map_.find(in_key);
         if (it_find != map_.end()) {
             return false;
@@ -18,6 +22,7 @@ public:
 
     virtual void DeleteKey(
         const KeyType& in_key) {
+        std::lock_guard<std::mutex> lock(mutex_);
         auto it_find = map_.find(in_key);
         if (it_find == map_.end()) {
             return;
@@ -28,6 +33,7 @@ public:
     virtual bool ModData(
         const KeyType& in_key,
         const ValueType& in_value) {
+        std::lock_guard<std::mutex> lock(mutex_);
         auto it_find = map_.find(in_key);
         if (it_find == map_.end()) {
             return false;
@@ -37,13 +43,15 @@ public:
     }
 
     virtual bool HaveKey(
-        const KeyType& in_key) {
+        const KeyType& in_key) const {
+        std::lock_guard<std::mutex> lock(mutex_);
         auto it_find = map_.find(in_key);
         return it_find != map_.end();
     }
     virtual bool FindData(
         const KeyType& in_key,
-        ValueType& out_value) {
+        ValueType& out_value) const {
+        std::lock_guard<std::mutex> lock(mutex_);
         auto it_find = map_.find(in_key);
         if (it_find == map_.end()) {
             return false;
@@ -53,5 +61,6 @@ public:
     }
 
 protected:
+    mutable std::mutex mutex_;
     std::map<KeyType, ValueType> map_;
 };
