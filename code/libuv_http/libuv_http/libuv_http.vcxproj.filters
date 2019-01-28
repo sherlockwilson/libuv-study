@@ -94,6 +94,12 @@
     <ClInclude Include="..\include\uv_http_client_session_manager.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\url_cmd_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cmd.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\libuv.lib">
@@ -120,6 +126,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\uv_http_client_session_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\url_cmd_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cmd.cc">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

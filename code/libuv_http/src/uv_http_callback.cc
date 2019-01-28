@@ -27,7 +27,7 @@ void HttpServerCallBack::OnUvRead(
     if (nread > 0) {
         char* separator;
         char* payload;
-        char* query_stirng;
+        char* query_string;
         char* end;
         membuf_t* membuf = (membuf_t*)client->data;
         assert(membuf);
@@ -57,18 +57,19 @@ void HttpServerCallBack::OnUvRead(
                     request_header = end + 1;
                 }
 
-                query_stirng = const_cast<char*>(strchr(path_info, '?'));
+                query_string = const_cast<char*>(strchr(path_info, '?'));
 
-                if (query_stirng) {
-                    *query_stirng = '\0';
-                    query_stirng++;
+                if (query_string) {
+                    *query_string = '\0';
+                    query_string++;
                 }
-
+                printf("path_info:%s\n",path_info);
+                printf("query_string:%s\n",query_string);
                 HttpServerUtil::HandleGet(
                     client,
                     request_header,
                     path_info,
-                    query_stirng);
+                    query_string);
             }
             else if (
                 request_header[0] == 'P'

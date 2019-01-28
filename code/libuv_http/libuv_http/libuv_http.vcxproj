@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\cmd.h" />
     <ClInclude Include="..\include\manager_template.h" />
     <ClInclude Include="..\include\timer.h" />
+    <ClInclude Include="..\include\url_cmd_manager.h" />
     <ClInclude Include="..\include\uv_http_client_session_manager.h" />
     <ClInclude Include="..\include\uv_http_server.h" />
     <ClInclude Include="..\include\membuf.h" />
@@ -49,8 +51,10 @@
     <Library Include="..\libs\libuv.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\cmd.cc" />
     <ClCompile Include="..\src\main.cc" />
     <ClCompile Include="..\src\membuf.cc" />
+    <ClCompile Include="..\src\url_cmd_manager.cc" />
     <ClCompile Include="..\src\uv_http_client_session_manager.cc" />
     <ClCompile Include="..\src\uv_http_server.cc" />
     <ClCompile Include="..\src\uv_http_callback.cc" />

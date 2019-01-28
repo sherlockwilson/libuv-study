@@ -1,7 +1,8 @@
 #include "uv_http_util.h"
+
 #include "uv_http_server.h"
 #include "uv_http_callback.h"
-
+#include "url_cmd_manager.h"
 #include <assert.h>
 
 void HttpServerUtil::HandleGet(
@@ -24,7 +25,12 @@ void HttpServerUtil::HandleGet(
             return;
         }
     } else {
-        char* respone = HttpServer::Instance()->res_get()(request_header, path_info, query_stirng);
+        auto sptr_http_session = std::make_shared<HttpSession>();
+        sptr_http_session->path_info = path_info;
+        std::string str_respose = URLCmdManager::Instance()->HttpResponse(
+            sptr_http_session);
+        char* respone = const_cast<char*>(
+            str_respose.c_str());
         if (*respone == ' ') {
             if (url) {
                 char* file_path = respone;
@@ -159,17 +165,17 @@ char* HttpServerUtil::FormatHttpResponse(
     respone = (char*)malloc(totalsize);
     if (cookie) {
         header_size = sprintf(respone, "HTTP/1.1 %s\r\n"
-            "Server: Igropyr/%s\r\n"
+            "Server: sherlock.lin/%s\r\n"
             "Content-Type: %s; charset=utf-8\r\n"
             "Content-Length: %d\r\n"
             "Set-Cookie: %s\r\n\r\n",
-            status, IGROPYR_VERSION, content_type, content_length, cookie);
+            status, SERVER_VERSION, content_type, content_length, cookie);
     } else {
         header_size = sprintf(respone, "HTTP/1.1 %s\r\n"
-            "Server: Igropyr/%s\r\n"
+            "Server: sherlock.lin/%s\r\n"
             "Content-Type: %s; charset=utf-8\r\n"
             "Content-Length: %d\r\n\r\n",
-            status, IGROPYR_VERSION, content_type, content_length);
+            status, SERVER_VERSION, content_type, content_length);
     }
     assert(header_size > 0);
 
@@ -263,7 +269,7 @@ char* HttpServerUtil::HttpErrorPage(
         "<html><head><title>%s</title></head><body bgcolor='white'><center><h1>%s</h1></center><hr><center>Igropyr/%s</center><p>%s</p></body></html>", 
         error, 
         error, 
-        IGROPYR_VERSION, 
+        SERVER_VERSION,
         error_info);
     return FormatHttpResponse(error.c_str(), "text/html", NULL, buffer, -1, NULL);
 }
