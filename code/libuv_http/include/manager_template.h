@@ -41,6 +41,16 @@ public:
         auto it_find = map_.find(in_key);
         return it_find != map_.end();
     }
+    virtual bool FindData(
+        const KeyType& in_key,
+        ValueType& out_value) {
+        auto it_find = map_.find(in_key);
+        if (it_find == map_.end()) {
+            return false;
+        }
+        out_value = it_find->second;
+        return true;
+    }
 
 protected:
     std::map<KeyType, ValueType> map_;

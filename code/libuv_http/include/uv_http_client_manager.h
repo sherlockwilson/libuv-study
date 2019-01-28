@@ -7,50 +7,59 @@
 #include "manager_template.h"
 #include "timer.h"
 
-struct HttpPost {
-    HttpPost() {}
-    HttpPost(
+enum OperateType {
+    POST = 1,
+    GET=2
+};
+
+struct HttpSession {
+    HttpSession() {}
+    HttpSession(
+        const OperateType in_operate_type,
         const int32_t in_content_len,
         const std::string& in_local_content)
-        :content_len(in_content_len),
+        :operate_type(in_operate_type),
+        content_len(in_content_len),
         local_content(in_local_content)
     {}
-    ~HttpPost() {}
+    ~HttpSession() {}
 
     bool IsExpire() const {
         return local_content.length() >= content_len;
     }
-
+    OperateType operate_type;
     int32_t content_len;
     std::string local_content;
 };
 
-typedef std::shared_ptr<HttpPost> HttpPostSptr;
+typedef std::shared_ptr<HttpSession> HttpSessionSptr;
 
-class HttpClientManager :
+class HttpClientSessionManager :
     public ManagerTemplate<
-    uv_tcp_t*, 
-    HttpPostSptr> {
+    uv_stream_t*,
+    HttpSessionSptr> {
 public:
-    static HttpClientManager* Instance();
-    bool Init(
-        const int32_t in_interval);
+    static HttpClientSessionManager* Instance();
+    bool Init();
     void UnInit();
     bool Insert(
-        uv_tcp_t* in_key, 
-        const HttpPostSptr in_value);
+        uv_stream_t* in_key,
+        const HttpSessionSptr in_value);
     bool Mod(
-        uv_tcp_t* in_key,
-        const HttpPostSptr in_value);
+        uv_stream_t* in_key,
+        const HttpSessionSptr in_value);
     bool Contains(
-        uv_tcp_t* in_key);
+        uv_stream_t* in_key);
     void Delete(
-        uv_tcp_t* in_key);
+        uv_stream_t* in_key);
+    bool Find(
+        uv_stream_t* in_key,
+        HttpSessionSptr& out_value);
 private:
     void Run();
-    HttpClientManager()
+    HttpClientSessionManager()
         :sptr_timer_() {
     }
-    ~HttpClientManager() {}
+    ~HttpClientSessionManager() {}
     std::shared_ptr<Timer> sptr_timer_;
 };

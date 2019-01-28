@@ -1,29 +1,28 @@
 #include "uv_http_client_manager.h"
-HttpClientManager* HttpClientManager::Instance() {
-    static HttpClientManager ins;
+HttpClientSessionManager* HttpClientSessionManager::Instance() {
+    static HttpClientSessionManager ins;
     return &ins;
 }
 
-bool HttpClientManager::Init(
-    const int32_t in_interval) {
-    if (in_interval <= 0) {
-        return false;
-    }
+bool HttpClientSessionManager::Init() {
+    int32_t interval = 1;
     sptr_timer_ = std::make_shared<Timer>();
     sptr_timer_->StartTimer(
-        in_interval, 
+        interval,
         std::bind(
-            &HttpClientManager::Run, 
+            &HttpClientSessionManager::Run,
             this));
     return true;
 }
 
-void HttpClientManager::UnInit() {
+void HttpClientSessionManager::UnInit() {
     sptr_timer_->Expire();
 }
 
-void HttpClientManager::Run() {
+void HttpClientSessionManager::Run() {
     for (auto& pair : map_) {
+        std::string& post_data = 
+            pair.second->local_content;
         if(!pair.second->IsExpire()) {
             continue;
         }
@@ -31,9 +30,9 @@ void HttpClientManager::Run() {
     }
 }
 
-bool HttpClientManager::Insert(
-    uv_tcp_t* in_key,
-    const HttpPostSptr in_value) {
+bool HttpClientSessionManager::Insert(
+    uv_stream_t* in_key,
+    const HttpSessionSptr in_value) {
     if (NULL == in_key) {
         return false;
     }
@@ -45,9 +44,9 @@ bool HttpClientManager::Insert(
     return true;
 }
 
-bool HttpClientManager::Mod(
-    uv_tcp_t* in_key,
-    const HttpPostSptr in_value) {
+bool HttpClientSessionManager::Mod(
+    uv_stream_t* in_key,
+    const HttpSessionSptr in_value) {
     if (NULL == in_key) {
         return false;
     }
@@ -59,8 +58,8 @@ bool HttpClientManager::Mod(
     return true;
 }
 
-bool HttpClientManager::Contains(
-    uv_tcp_t* in_key) {
+bool HttpClientSessionManager::Contains(
+    uv_stream_t* in_key) {
     if (NULL == in_key) {
         return false;
     }
@@ -71,10 +70,23 @@ bool HttpClientManager::Contains(
     return true;
 }
 
-void HttpClientManager::Delete(
-    uv_tcp_t* in_key) {
+void HttpClientSessionManager::Delete(
+    uv_stream_t* in_key) {
     if (NULL == in_key) {
         return ;
     }
     DeleteKey(in_key);
+}
+
+bool HttpClientSessionManager::Find(
+    uv_stream_t* in_key,
+    HttpSessionSptr& out_value) {
+    if (NULL == in_key) {
+        return false;
+    }
+    if (!FindData(in_key, out_value)) {
+        return false;
+    }
+
+    return true;
 }
