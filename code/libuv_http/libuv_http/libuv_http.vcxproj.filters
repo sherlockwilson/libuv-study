@@ -85,13 +85,13 @@
     <ClInclude Include="..\include\uv_http_server_manager.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\uv_http_client_manager.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\manager_template.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\include\timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\uv_http_client_session_manager.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,7 +119,7 @@
     <ClCompile Include="..\src\uv_http_server_manager.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\uv_http_client_manager.cc">
+    <ClCompile Include="..\src\uv_http_client_session_manager.cc">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

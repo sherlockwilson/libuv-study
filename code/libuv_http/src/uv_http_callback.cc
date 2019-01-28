@@ -8,7 +8,7 @@
 #include "membuf.h"
 #include "uv_http_server.h"
 #include "uv_http_util.h"
-#include "uv_http_client_manager.h"
+#include "uv_http_client_session_manager.h"
 
 
 void HttpServerCallBack::OnUvAlloc(
