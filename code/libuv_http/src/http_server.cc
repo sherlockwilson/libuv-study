@@ -1,6 +1,6 @@
-#include "uv_http_server.h"
+#include "http_server.h"
 
-#include "uv_http_callback.h"
+#include "http_callback.h"
 
 HttpServer* HttpServer::Instance() {
     static HttpServer ins;

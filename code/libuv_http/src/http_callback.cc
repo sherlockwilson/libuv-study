@@ -1,4 +1,4 @@
-#include "uv_http_callback.h"
+#include "http_callback.h"
 
 #include <assert.h>
 
@@ -6,8 +6,8 @@
 #include <thread>
 
 #include "membuf.h"
-#include "uv_http_server.h"
-#include "uv_http_util.h"
+#include "http_server.h"
+#include "http_util.h"
 
 
 void HttpServerCallBack::OnUvAlloc(

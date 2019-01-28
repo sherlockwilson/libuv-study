@@ -1,7 +1,7 @@
-#include "uv_http_server_manager.h"
+#include "http_server_manager.h"
 
-#include "uv_http_callback.h"
-#include "uv_http_server.h"
+#include "http_callback.h"
+#include "http_server.h"
 
 HttpServerManager* HttpServerManager::Instance() {
     static HttpServerManager ins;

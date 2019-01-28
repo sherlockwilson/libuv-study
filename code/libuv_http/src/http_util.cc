@@ -1,7 +1,7 @@
-#include "uv_http_util.h"
+#include "http_util.h"
 
-#include "uv_http_server.h"
-#include "uv_http_callback.h"
+#include "http_server.h"
+#include "http_callback.h"
 #include "url_cmd_manager.h"
 #include <assert.h>
 
