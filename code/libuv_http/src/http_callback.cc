@@ -18,14 +18,13 @@ void HttpServerCallBack::OnUvAlloc(
     uv_buf_t* buf) {
     *buf = uv_buf_init(
         reinterpret_cast<char*>(malloc(suggested_size)), 
-        suggested_size);
+        static_cast<uint32_t>(suggested_size));
 }
 
 void HttpServerCallBack::OnUvRead(
     uv_stream_t* client, 
     ssize_t nread, 
     const uv_buf_t* buf) {
-    printf("nread:%d\n", nread);
     if (nread > 0) {
         char* separator;
         char* payload;
@@ -34,7 +33,7 @@ void HttpServerCallBack::OnUvRead(
         membuf_t* membuf = (membuf_t*)client->data;
         assert(membuf);
 
-        Membuf::AppendData(membuf, buf->base, nread);
+        Membuf::AppendData(membuf, buf->base, static_cast<uint32_t>(nread));
         separator = const_cast<char*>(strstr((const char*)membuf->data, "\r\n\r\n"));
 
         std::string data((const char*)membuf->data, membuf->size);

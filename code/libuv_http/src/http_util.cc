@@ -63,9 +63,9 @@ void HttpServerUtil::CloseClient(
 void HttpServerUtil::WriteUvData(
     uv_stream_t* client,
     const void* data,
-    unsigned int len,
-    int need_copy_data,
-    int need_free_data) {
+    uint32_t len,
+    int32_t need_copy_data,
+    int32_t need_free_data) {
     uv_buf_t buf;
     uv_write_t* w;
     void* newdata = (void*)data;
@@ -73,8 +73,8 @@ void HttpServerUtil::WriteUvData(
     if (data == NULL || len == 0) {
         return;
     }
-    if (len == (unsigned int)-1) {
-        len = strlen((char*)data);
+    if (len == static_cast<uint32_t>(-1)) {
+        len = static_cast<uint32_t>(strlen((char*)data));
     }
     if (need_copy_data) {
         newdata = malloc(len);
@@ -92,9 +92,9 @@ void HttpServerUtil::SendFile(
     const char* content_type, 
     const char* file, 
     const char* file_path) {
-    int file_size;
-    int read_bytes;
-    int respone_size;
+    int32_t file_size;
+    int32_t read_bytes;
+    int32_t respone_size;
     std::string respone;
     unsigned char* file_data;
 
@@ -105,7 +105,7 @@ void HttpServerUtil::SendFile(
         file_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
         file_data = (unsigned char*)malloc(file_size);
-        read_bytes = fread(file_data, 1, file_size, fp);
+        read_bytes = static_cast<int32_t>(fread(file_data, 1, file_size, fp));
         assert(read_bytes == file_size);
         fclose(fp);
 
@@ -124,17 +124,19 @@ std::string HttpServerUtil::FormatHttpResponse(
     const char* content_type, 
     const char* cookie, 
     const void* content, 
-    int content_length, 
-    int* respone_size)
+    int32_t content_length,
+    int32_t* respone_size)
 {
-    int totalsize, header_size;
+    int32_t totalsize, header_size;
     //char* respone;
 
     if (content_length < 0) {
-        content_length = content ? strlen((char*)content) : 0;
+        content_length = content ? static_cast<int32_t>(strlen((char*)content)) : 0;
     }
 
-    totalsize = strlen(status) + strlen(content_type) + content_length + 128;
+    totalsize = static_cast<int32_t>(strlen(status)) + 
+        static_cast<int32_t>(strlen(content_type)) + 
+        static_cast<int32_t>(content_length) + 128;
     //respone = (char*)malloc(totalsize);
     std::string response;
     response.reserve(totalsize);
@@ -165,7 +167,7 @@ std::string HttpServerUtil::FormatHttpResponse(
 }
 
 std::string HttpServerUtil::HandleStatusCode(
-    int code) {
+    int32_t code) {
     switch (code) {
     case 200: return("200 OK"); break;
     case 301: return("301 Moved Permanently"); break;
@@ -234,9 +236,8 @@ std::string HttpServerUtil::HandleContentType(
 }
 
 std::string HttpServerUtil::HttpErrorPage(
-    int error_code, 
+    int32_t error_code,
     const char* error_info) {
-    char* respone;
     std::string error = HandleStatusCode(error_code);
     char buffer[1024] = {0};
     snprintf(buffer, 
@@ -320,11 +321,11 @@ char* HttpServerUtil::HttpHeaderParser(
 
 char* HttpServerUtil::HttpPathParser(
     char* path, 
-    int i)
+    int32_t i)
 {
     char* begin = path;
     char* end;
-    int n = 0;
+    int32_t n = 0;
 
     while(true) {
         if (*begin == '/') {

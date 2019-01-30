@@ -20,7 +20,7 @@ public:
         const char* payload);
 
     static std::string HttpResponse(
-        const int code,
+        const int32_t code,
         const char* content_type,
         const char* cookie,
         const char* content);
@@ -30,8 +30,8 @@ public:
         const char* content_type,
         const char* cookie,
         const void* content,
-        int content_length,
-        int* respone_size);
+        int32_t content_length,
+        int32_t* respone_size);
 
     static void CloseClient(
         uv_stream_t* client);
@@ -39,9 +39,9 @@ public:
     static void WriteUvData(
         uv_stream_t* client, 
         const void* data, 
-        unsigned int len, 
-        int need_copy_data, 
-        int need_free_data);
+        uint32_t len, 
+        int32_t need_copy_data, 
+        int32_t need_free_data);
 
     static void SendFile(
         uv_stream_t* client, 
@@ -50,13 +50,13 @@ public:
         const char* file_path);
 
     static std::string HandleStatusCode(
-        int code);
+        int32_t code);
 
     static std::string HandleContentType(
         const char* postfix);
 
     static std::string HttpErrorPage(
-        int error_code, 
+        int32_t error_code, 
         const char* error_info);
 
     static int HttpPar(
@@ -69,7 +69,7 @@ public:
 
     static char* HttpPathParser(
         char* path, 
-        int i);
+        int32_t i);
 };
 
 }  //  namespace top
