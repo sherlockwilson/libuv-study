@@ -24,7 +24,16 @@ enum OperateType {
 };
 
 struct HttpSession {
-    HttpSession() {}
+    HttpSession()
+        :operate_type(GET),
+        client(NULL),        
+        session_len(),
+        header(),
+        content(),
+        path_info(),
+        payload(),
+        query() {
+    }
     HttpSession(
         const OperateType in_operate_type,
         const int32_t in_session_len,
@@ -35,13 +44,13 @@ struct HttpSession {
         const std::string& in_query,
         uv_stream_t*& in_client)
         :operate_type(in_operate_type),
+        client(in_client),
         session_len(in_session_len),
         header(in_header),
         content(in_content),
         path_info(in_path_info),
         payload(in_payload),
-        query(in_query),
-        client(in_client)
+        query(in_query)
     {}
     ~HttpSession() {}
 
