@@ -54,11 +54,6 @@ struct HttpSession {
     {}
     ~HttpSession() {}
 
-    bool IsExpire() const {
-        return header.length() +
-            content.length() >=
-            session_len;
-    }
     OperateType operate_type;
     uv_stream_t* client;
     int32_t session_len;
