@@ -46,6 +46,12 @@
     <ClInclude Include="..\include\cmd_manager.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cron_task_manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\queue_template.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cc">
@@ -73,6 +79,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\cmd_manager.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cron_task_manager.cc">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
