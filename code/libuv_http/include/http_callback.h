@@ -2,6 +2,8 @@
 
 #include "http_util_def.h"
 
+namespace top {
+
 class HttpServerCallBack {
 public:
     static void OnConnection(
@@ -25,3 +27,5 @@ public:
         uv_write_t* w, 
         int status);
 };
+
+}  //  namespace top

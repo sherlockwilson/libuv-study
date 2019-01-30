@@ -3,6 +3,8 @@
 #include <mutex>
 #include <memory>
 
+namespace top
+{
 template<typename KeyType,typename ValueType>
 class ManagerTemplate {
 public:
@@ -64,3 +66,4 @@ protected:
     mutable std::mutex mutex_;
     std::map<KeyType, ValueType> map_;
 };
+}  //  namespace top

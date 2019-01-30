@@ -14,7 +14,7 @@
 
 #define SERVER_VERSION "0.0.1"
 
-
+namespace top {
 
 typedef char* (*igr_res)(const char* request_header, const char* path_info, const char* payload);
 
@@ -46,8 +46,8 @@ struct HttpSession {
     ~HttpSession() {}
 
     bool IsExpire() const {
-        return header.length() + 
-            content.length() >= 
+        return header.length() +
+            content.length() >=
             session_len;
     }
     OperateType operate_type;
@@ -61,3 +61,5 @@ struct HttpSession {
 };
 
 typedef std::shared_ptr<HttpSession> HttpSessionSptr;
+
+}  //  namespace top

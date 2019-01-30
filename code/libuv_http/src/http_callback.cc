@@ -10,6 +10,7 @@
 #include "http_server.h"
 #include "http_util.h"
 
+namespace top {
 
 void HttpServerCallBack::OnUvAlloc(
     uv_handle_t* handle, 
@@ -87,6 +88,21 @@ void HttpServerCallBack::OnUvRead(
                     request_header = end + 1;
                 }
 
+                printf("request_header:%s\n",
+                    request_header);
+                /*
+                std::string key("Content-Length: ");
+                char* it_find = std::find(request_header, request_header + strlen(request_header), key.c_str());
+                if (NULL != it_find) {
+                    char* it_find1 = std::find(it_find + key.size(), request_header + strlen(request_header), "\r\n");
+                    char number[256] = {0};
+                    strncpy(number, it_find, it_find1 - it_find1);
+                    int32_t content_length = atoi(number);
+                    printf("%s%d\n",
+                        key.c_str(),
+                        content_length);
+                }*/
+
                 HttpServerUtil::HandlePost(
                     client,
                     request_header,
@@ -137,3 +153,4 @@ void HttpServerCallBack::AfterUvWrite(
     free(w);
 }
 
+} //  namespace top

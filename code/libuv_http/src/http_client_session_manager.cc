@@ -1,4 +1,7 @@
 #include "http_client_session_manager.h"
+
+namespace top {
+
 HttpClientSessionManager* HttpClientSessionManager::Instance() {
     static HttpClientSessionManager ins;
     return &ins;
@@ -90,3 +93,5 @@ bool HttpClientSessionManager::Find(
 
     return true;
 }
+
+}  //  namespace top

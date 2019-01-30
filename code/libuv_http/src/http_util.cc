@@ -5,21 +5,25 @@
 
 #include "http_server.h"
 #include "http_callback.h"
-#include "url_cmd_manager.h"
 #include "message_loop.h"
 
+namespace top {
 
 void HttpServerUtil::HandleGet(
     uv_stream_t* client, 
     const char* request_header, 
     const char* path_info, 
     const char* query_string) {
-    auto sptr_http_session = std::make_shared<HttpSession>();
-    sptr_http_session->path_info = path_info;
-    sptr_http_session->query = query_string;
-    sptr_http_session->client = client;
-    MessageLoopForGet::Instance()->PostMsg(sptr_http_session);
-
+    if (NULL == client ||
+        NULL == request_header) {
+        return;
+    }
+    auto session = std::make_shared<HttpSession>();
+    session->header = request_header;
+    session->client = client;
+    session->query = (NULL == query_string ? "" : query_string);
+    session->path_info = (NULL == path_info ? "" : path_info);
+    MessageLoopForGet::Instance()->PostMsg(session);
 }
 
 void HttpServerUtil::HandlePost(
@@ -354,3 +358,5 @@ char* HttpServerUtil::HttpPathParser(
 
     return begin;
 }
+
+}  //  namespace top

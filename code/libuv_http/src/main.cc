@@ -3,7 +3,7 @@
 int main(void) {
     const char* static_path = "/static/path/";
     const char* ip = "0.0.0.0";
-    HttpServerManager::Instance()->Init(static_path, ip, 8080);
+    top::HttpServerManager::Instance()->Init(static_path, ip, 8080);
     return 0;
 }
 

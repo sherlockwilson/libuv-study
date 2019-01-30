@@ -3,20 +3,19 @@
 #include <uv.h>
 
 #include <memory>
+#include <queue>
 
 #include "manager_template.h"
 #include "http_util_def.h"
 #include "timer.h"
 
+namespace top
+{
 template<typename MessageType>
-class MessageLoopBase :
-    public ManagerTemplate<
-    int32_t,
-    MessageType> {
+class MessageLoopBase {
+    typedef std::shared_ptr<MessageType> MessageTypeSptr;
 public:
-    MessageLoopBase()
-        :message_id_(0) {
-    }
+    MessageLoopBase() {}
     virtual ~MessageLoopBase() {}
     virtual bool Init() {
         int32_t interval = 1;
@@ -34,32 +33,40 @@ public:
     }
 
     virtual bool PostMsg(
-        const MessageType session) = 0;
+        const MessageTypeSptr session) {
+        if (NULL == session) {
+            return false;
+        }
+        msg_queue_.push(session);
+        return true;
+    }
 protected:
-    virtual void Exec(const MessageType session) = 0;
+    virtual void Exec(const MessageTypeSptr session) = 0;
 
     virtual void Run() {
-        for (auto& pair : this->map_) {
-            Exec(pair.second);
-            this->DeleteKey(pair.first);
+        std::lock_guard<std::mutex> lock(mutex_);
+        while (!msg_queue_.empty()) {
+            Exec(msg_queue_.back());
+            msg_queue_.pop();
         }
     }
+    std::mutex mutex_;
     std::atomic<int32_t> message_id_;
     std::shared_ptr<Timer> sptr_timer_;
+    std::queue<MessageTypeSptr> msg_queue_;
 };
 
 class MessageLoopForGet :
-    public MessageLoopBase<HttpSessionSptr> {
+    public MessageLoopBase<HttpSession> {
 public:
     static MessageLoopForGet* Instance() {
         static MessageLoopForGet ins;
         return &ins;
     }
-
-    virtual bool PostMsg(
-        const HttpSessionSptr session);
 protected:
-    virtual void Exec(const HttpSessionSptr session);
+   void Exec(const HttpSessionSptr session);
+private:
     MessageLoopForGet() {}
     ~MessageLoopForGet() {}
 };
+}  //  namespace top

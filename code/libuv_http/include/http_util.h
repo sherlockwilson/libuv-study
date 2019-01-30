@@ -3,6 +3,8 @@
 #include <string>
 #include "http_util_def.h"
 
+namespace top {
+
 class HttpServerUtil {
 public:
     static void HandleGet(
@@ -69,3 +71,5 @@ public:
         char* path, 
         int i);
 };
+
+}  //  namespace top

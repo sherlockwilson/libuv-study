@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+namespace top {
+
 typedef struct {
 	unsigned char* data;
 	unsigned int   size;
@@ -64,5 +66,5 @@ public:
 #define MEMBUF_INIT_LOCAL(buf,n) membuf_t buf; unsigned char buf##n[n]; Membuf::InitLocal(&buf, &buf##n, n);
 #endif
 
-
+}  //  namespace top
 #endif //__MEMBUF_H__

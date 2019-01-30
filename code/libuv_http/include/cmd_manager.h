@@ -5,17 +5,22 @@
 #include "manager_template.h"
 #include "http_util_def.h"
 
-class URLCmdManager :
+namespace top {
+
+class CmdManager :
     public ManagerTemplate<
     std::string,
-    std::function<std::string()>> {
+    std::function<
+    std::string(const std::string&)>> {
 public:
-    static URLCmdManager* Instance();
+    static CmdManager* Instance();
     bool Init();
     void UnInit();
     std::string HttpResponse(
         const HttpSessionSptr& in_sptr_session);
 private:
-    URLCmdManager() {}
-    ~URLCmdManager() {}
+    CmdManager() {}
+    ~CmdManager() {}
 };
+
+}  //  namespace top

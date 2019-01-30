@@ -8,6 +8,8 @@
 #include<mutex>
 #include<condition_variable>
 
+namespace top {
+
 class Timer {
 public:
     Timer()
@@ -93,3 +95,5 @@ private:
     std::mutex mutex_;
     std::condition_variable expired_cond_;
 };
+
+}  //  namespace top

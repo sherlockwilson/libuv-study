@@ -8,7 +8,7 @@
 #include "timer.h"
 #include "http_util_def.h"
 
-
+namespace top {
 
 class HttpClientSessionManager :
     public ManagerTemplate<
@@ -39,3 +39,5 @@ private:
     ~HttpClientSessionManager() {}
     std::shared_ptr<Timer> sptr_timer_;
 };
+
+}  //  namespace top

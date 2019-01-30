@@ -6,6 +6,8 @@
 
 #include "http_util_def.h"
 
+namespace top {
+
 class HttpServer {
 public:
     static HttpServer* Instance();
@@ -35,3 +37,5 @@ private:
     igr_res res_post_;
     std::string url_;
 };
+
+}  //  namespace top

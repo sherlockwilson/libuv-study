@@ -1,21 +1,13 @@
 #include "message_loop.h"
 
-#include "url_cmd_manager.h"
+#include <string.h>
+
+#include "cmd_manager.h"
 #include "http_util.h"
 #include "http_server.h"
 
-bool MessageLoopForGet::PostMsg(
-    const HttpSessionSptr session) {
-    if (NULL == session) {
-        return false;
-    }
-    if (!AddData(message_id_, session)) {
-        return false;
-    }
-    ++message_id_;
-    return true;
-}
-
+namespace top
+{
 void MessageLoopForGet::Exec(const HttpSessionSptr session) {
     char* postfix = strrchr(const_cast<char*>(session->path_info.c_str()), '.');
     const char* url = HttpServer::Instance()->url().c_str();
@@ -38,7 +30,7 @@ void MessageLoopForGet::Exec(const HttpSessionSptr session) {
         }
     }
     else {
-        std::string str_respose = URLCmdManager::Instance()->HttpResponse(
+        std::string str_respose = CmdManager::Instance()->HttpResponse(
             session);
         char* respone = const_cast<char*>(
             str_respose.c_str());
@@ -72,3 +64,4 @@ void MessageLoopForGet::Exec(const HttpSessionSptr session) {
         }
     }
 }
+}  //  namespace top

@@ -6,6 +6,8 @@
 
 #include "http_util_def.h"
 
+namespace top {
+
 class HttpServerManager {
 public:
     static HttpServerManager* Instance();
@@ -19,3 +21,5 @@ private:
     ~HttpServerManager() {
     }
 };
+
+}  //  namespace top

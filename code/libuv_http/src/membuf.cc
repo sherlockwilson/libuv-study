@@ -5,6 +5,8 @@
 #include <limits.h>
 #include <assert.h>
 
+namespace top {
+
 void Membuf::Init(membuf_t* buf, unsigned int initial_buffer_size) {
 	memset(buf, 0, sizeof(membuf_t));
 	buf->data = initial_buffer_size > 0 ? (unsigned char*) malloc(initial_buffer_size) : NULL;
@@ -116,3 +118,5 @@ void swap_buffer_size(membuf_t* buf1, membuf_t* buf2) {
 	unsigned int tmp_buffer_size = buf1->buffer_size;
 	buf1->buffer_size = buf2->buffer_size; buf2->buffer_size = tmp_buffer_size;
 }
+
+}  //  namespace top
