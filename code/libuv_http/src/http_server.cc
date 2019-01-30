@@ -15,6 +15,8 @@ bool HttpServer::Init(
     int port) {
     struct sockaddr_in addr;
     uv_ip4_addr(ip, port, &addr);
+    ip_ = ip;
+    port_ = ntohs(addr.sin_port);
     url_ = static_path;
     uv_tcp_init(uv_default_loop(), &server_);
     uv_tcp_bind(&server_, (const struct sockaddr*) &addr, 0);

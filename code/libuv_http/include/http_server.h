@@ -27,6 +27,12 @@ public:
     std::string& url() {
         return url_;
     }
+    std::string& ip() {
+        return ip_;
+    }
+    int32_t& port() {
+        return port_;
+    }
 private:
     HttpServer() {
     }
@@ -36,6 +42,8 @@ private:
     igr_res res_get_;
     igr_res res_post_;
     std::string url_;
+    std::string ip_;
+    int32_t port_;
 };
 
 }  //  namespace top
