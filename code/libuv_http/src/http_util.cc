@@ -157,6 +157,7 @@ std::string HttpServerUtil::FormatHttpResponse(
     assert(header_size > 0);
 
     if (content) {
+        memset(const_cast<char*>(response.c_str()) + header_size, 0, content_length);
         memcpy(const_cast<char*>(response.c_str()) + header_size, content, content_length);
     }
     if (respone_size) {

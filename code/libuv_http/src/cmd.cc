@@ -12,7 +12,7 @@ static const char* g_cookie = "";
 std::string Cmd::Print(
     const std::string& in_str_print) {
     printf(in_str_print.c_str());
-    return  HttpServerUtil::HttpResponse(200, g_context, g_cookie, in_str_print.c_str());
+    return  HttpServerUtil::HttpResponse(200, g_context, g_cookie, "Print OK");
 }
 
 std::string Cmd::Help() {
